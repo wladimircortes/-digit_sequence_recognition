@@ -1,5 +1,5 @@
 import sys
-sys.path.append("/home/jsaavedr/Research/git/tensorflow-2/convnet2")
+sys.path.append("/content/digit_sequence_recognition")
 import tensorflow as tf
 import models.resnet as resnet
 import datasets.data as data
@@ -24,14 +24,15 @@ class SSearch :
         self.mean_image = np.reshape(self.mean_image, self.input_shape)
        
         #loading classifier model
-        model = resnet.ResNet([3,4,6,3],[64,128,256,512], self.configuration.get_number_of_classes(), se_factor = 0)
+        model = resnet.RecogNet([3,4,6,3],[32,64,128,256], self.configuration.get_number_of_classes(), se_factor = 0)
+        #model = resnet.RecogNet([3,4,6,3],[32,64,128,256], self.configuration.get_number_of_classes(), use_bottleneck = False)
         input_image = tf.keras.Input((self.input_shape[0], self.input_shape[1], self.input_shape[2]), name = 'input_image')     
         model(input_image)    
         model.summary()
         model.load_weights(self.configuration.get_checkpoint_file(), by_name = True, skip_mismatch = True)
         #create the sim-model with a customized layer    
         #you can change output_layer_name                
-        output_layer_name = 'global_average_pooling2d'
+        output_layer_name = 'backbone'
         output = model.get_layer(output_layer_name).output                
         self.sim_model = tf.keras.Model(model.input, output)        
         self.sim_model.summary()            
@@ -185,3 +186,4 @@ if __name__ == '__main__' :
                 io.imsave(output_name, image_r)
                 print('result saved at {}'.format(output_name))
                 fquery = input('Query:')
+                
