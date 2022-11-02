@@ -123,7 +123,7 @@ if __name__ == '__main__' :
         model.evaluate(val_dataset,
                        steps = configuration.get_validation_steps()) 
         
-   elif pargs.mode == 'predict':
+    elif pargs.mode == 'predict':
     filename = input('file :')
     while(filename != 'end') :
         target_size = (configuration.get_image_height(), configuration.get_image_width())
