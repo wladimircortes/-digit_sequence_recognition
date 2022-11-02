@@ -74,6 +74,17 @@ if __name__ == '__main__' :
         monitor='val_acc',
         save_freq = 'epoch',            
         )
+    
+    #save_freq = configuration.get_snapshot_steps())                
+    if configuration.get_model_name() == 'SKETCH' :
+        model = alexnet.AlexNetModel(configuration.get_number_of_classes())            
+        process_fun = imgproc.process_sketch
+    else:
+        model = simple.SimpleModel(configuration.get_number_of_classes())
+        process_fun = imgproc.process_mnist    
+    
+    
+    
     model = resnet.RecogNet([3,4,6,3],[32,64,128,256], configuration.get_number_of_classes(), use_bottleneck = False)
     print('Model is Resnet')
     sys.stdout.flush()    
