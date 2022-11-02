@@ -125,20 +125,20 @@ if __name__ == '__main__' :
                        steps = configuration.get_validation_steps()) 
         
     elif pargs.mode == 'predict':
-    filename = input('file :')
-    while(filename != 'end') :
-        target_size = (configuration.get_image_height(), configuration.get_image_width())
-        image = process_fun(data.read_image(filename, configuration.get_number_of_channels()), target_size )
-        image = image - mean_image
-        image = tf.expand_dims(image, 0)        
-        pred = model.predict(image)
-        pred = pred[0]
-        #softmax to estimate probs
-        pred = np.exp(pred - max(pred))
-        pred = pred / np.sum(pred)            
-        cla = np.argmax(pred)
-        print('{} [{}]'.format(cla, pred[cla]))
         filename = input('file :')
+        while(filename != 'end') :
+            target_size = (configuration.get_image_height(), configuration.get_image_width())
+            image = process_fun(data.read_image(filename, configuration.get_number_of_channels()), target_size )
+            image = image - mean_image
+            image = tf.expand_dims(image, 0)        
+            pred = model.predict(image)
+            pred = pred[0]
+            #softmax to estimate probs
+            pred = np.exp(pred - max(pred))
+            pred = pred / np.sum(pred)            
+            cla = np.argmax(pred)
+            print('{} [{}]'.format(cla, pred[cla]))
+            filename = input('file :')
         
     #save the model   
     if pargs.save :
